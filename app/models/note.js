@@ -47,10 +47,6 @@ Note.delete = function (id, callback) {
 
 };
 
-Note.clearType = function (callback) {
-
-};
-
 Note.createIndex = function (callback) {
 	client.indices.create({
 		index: config.index

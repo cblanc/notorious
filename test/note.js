@@ -43,4 +43,31 @@ describe("Note Model", function () {
 			});
 		});
 	});
+
+	describe(".createMapping", function () {
+		before(function (done) {
+			Note.createIndex(done);
+		});
+
+		after(function (done) {
+			Note.deleteIndex(done);
+		});
+
+		it ("creates a mapping", function (done) {
+			Note.createMapping(function (error, result) {
+				if (error) return done(error);
+				assert.isTrue(result.acknowledged);
+				client.indices.getMapping({
+					index: "notorious",
+					type: "note"
+				}, function (error, result) {
+					if (error) return done(error);
+					for (var prop in Note._config.mapping.properties) {
+						assert.isDefined(result.notorious.mappings[prop]);
+					}
+					done();
+				})
+			});
+		});
+	});
 });

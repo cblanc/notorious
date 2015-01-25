@@ -37,11 +37,17 @@ function Note (note) {
 	this.tags = note.tags;
 }
 
+Note._config = config;
+
 Note.create = function (note, callback) {
 
 };
 
 Note.delete = function (id, callback) {
+
+};
+
+Note.clearType = function (callback) {
 
 };
 
@@ -58,7 +64,11 @@ Note.deleteIndex = function (callback) {
 };
 
 Note.createMapping = function (callback) {
-
+	client.indices.putMapping({
+		index: config.index,
+		type: config.type,
+		body: config.mapping
+	}, callback);
 };
 
 

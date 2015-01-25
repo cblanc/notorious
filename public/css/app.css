@@ -1,0 +1,26 @@
+/*
+
+.color-primary-0 { color: #2E4272 }	
+.color-primary-1 { color: #7887AB }
+.color-primary-2 { color: #4F628E }
+.color-primary-3 { color: #162955 }
+.color-primary-4 { color: #061539 }
+
+*/
+
+html {
+	/*font-family: monaco,Consolas,"Lucida Console",monospace;*/
+	/*font-color: #0F0F0F;*/
+}
+
+.sidebar { 
+	background-color: #4F628E;
+	min-height: 100%;
+	padding-top: 60px;
+}
+
+.main {
+	background-color: #7887AB;
+	padding-top: 60px;
+	min-height: 100%;
+}

@@ -13,7 +13,7 @@ npm install
 ## Run
 
 ```bash
-npm run
+npm start
 ```
 
 ## Test

@@ -1,0 +1,18 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-3 sidebar">
+			<h3>Notes</h3>
+			<ul id="notelist">
+			{{#each notes}}
+				<li><a href="/notes/{{this.id}}">{{this.title}}</a></li>
+			{{/each}}
+			</ul>
+		</div>
+		<div class="col-sm-9 main">
+			<form action="/notes" method="POST">
+			<h3>Title</h3>
+			<p>This is the note content</p>
+			</form>
+		</div>
+	</div>
+</div>

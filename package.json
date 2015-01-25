@@ -1,0 +1,33 @@
+{
+  "name": "notorious",
+  "version": "1.0.0",
+  "description": "Note taking with elasticsearch",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test npm test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cblanc/notorious"
+  },
+  "keywords": [
+    "note",
+    "taking",
+    "elasticsearch"
+  ],
+  "author": "Chris Blanchard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cblanc/notorious/issues"
+  },
+  "homepage": "https://github.com/cblanc/notorious",
+  "dependencies": {
+    "async": "~0.9.0",
+    "elasticsearch": "~3.1.1",
+    "express": "~4.11.1"
+  },
+  "devDependencies": {
+    "chai": "~1.10.0",
+    "mocha": "~2.1.0"
+  }
+}

@@ -21,6 +21,27 @@ describe("Note Model", function () {
 		helper.teardownDb(done);
 	});
 
+	describe(".delete", function () {
+		before(function (done) {
+			Note.create(note, function (error, note) {
+				if (error) return done(error);
+				_id = note._id;
+				done();
+			});
+		});
+
+		it ("deletes a note", function (done) {
+			Note.delete(_id, function (error, result) {
+				if (error) return done(error);
+				Note.find_by_id(_id, function (error, result) {
+					if (error) return done(error);
+					assert.isNull(result);
+					done();
+				});
+			});
+		});
+	});
+
 	describe(".find_by_id", function () {
 		before(function (done) {
 			Note.create(note, function (error, result) {
@@ -30,9 +51,9 @@ describe("Note Model", function () {
 			});
 		});
 
-		// after(function (done) {
-		// 	Note.delete(_id, done);
-		// });
+		after(function (done) {
+			Note.delete(_id, done);
+		});
 
 		it ("returns null if note does not exist", function (done) {
 			Note.find_by_id("foo", function (error, result) {

@@ -49,8 +49,12 @@ Note.create = function (note, callback) {
 	}, callback);
 };
 
-Note.delete = function (id, callback) {
-
+Note.delete = function (_id, callback) {
+	client.delete({
+		index: config.index,
+		type: config.type,
+		id: _id
+	}, callback);
 };
 
 Note.find_by_id = function (_id, callback) {

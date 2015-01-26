@@ -59,7 +59,7 @@ Note.find_by_id = function (_id, callback) {
 		type: config.type,
 		id: _id
 	}, function (error, result) {
-		if (error) return callback(error);
+		if (error && error.message !== "Not Found") return callback(error);
 		if (result.found) {
 			var note = result._source;
 			note._id = _id;

@@ -2,9 +2,10 @@ var async = require("async");
 var path = require("path");
 var client = require(path.join(__dirname, "../../config/db.js"));
 var helper = {};
+var Note;
 
 helper.client = client;
-helper.Note = require(path.join(__dirname, "../../app/models/note.js"));
+helper.Note = Note = require(path.join(__dirname, "../../app/models/note.js"));
 
 helper.indexExists = function (name, callback) {
 	return client.indices.exists({

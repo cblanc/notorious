@@ -27,24 +27,47 @@ var config = {
 
 function Note (note) {
 	if (note.id) {
-		this.id = note.id;
+		this._id = note._id;
 	}
 
 	this.title = note.title;
 	this.content = note.content;
-
-	if (this.tags && typeof this.tags === "string")
 	this.tags = note.tags;
 }
 
 Note._config = config;
 
 Note.create = function (note, callback) {
-
+	client.index({
+		index: config.index,
+		type: config.type,
+		body: {
+			title: note.title,
+			content: note.content,
+			tags: note.tags
+		}
+	}, callback);
 };
 
 Note.delete = function (id, callback) {
 
+};
+
+Note.find_by_id = function (_id, callback) {
+	client.get({
+		index: config.index,
+		type: config.type,
+		id: _id
+	}, function (error, result) {
+		if (error) return callback(error);
+		if (result.found) {
+			var note = result._source;
+			note._id = _id;
+			return callback(null, new Note(note));
+		} else {
+			return callback(null, null);
+		}
+	});
 };
 
 Note.createIndex = function (callback) {

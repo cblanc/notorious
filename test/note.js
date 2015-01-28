@@ -131,7 +131,7 @@ describe("Note Model", function () {
 			setTimeout(function () {
 				Note.list(function (error, result) {
 					if (error) return done(error);
-					assert.equal(result.hits.hits.length, 3);
+					assert.equal(result.length, 3);
 					done();
 				});
 			}, 1000)

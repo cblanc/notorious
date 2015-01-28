@@ -22,4 +22,10 @@ module.exports = function (app) {
 	}));
 	app.set("views", path.join(__dirname, "../app/views"));
 	app.set("view engine", "handlebars");
+
+	// Error handling
+	app.use(function (error, request, response, next) {
+		console.log(error.stack);
+		res.status(500).end("An error occurred");
+	});
 };

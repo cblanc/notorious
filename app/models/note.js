@@ -81,7 +81,10 @@ Note.list = function (callback) {
 			}
 		},
 		size: 1000
-	}, callback);
+	}, function (error, result) {
+		if (error) return callback(error);
+		callback(null, result.hits.hits);
+	});
 };
 
 // Index Operations

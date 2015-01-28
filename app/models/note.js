@@ -6,9 +6,6 @@ var config = {
 	"type" : "note",
 	"mapping" : {
 		"note" : {
-			"_all" : { 
-				"enabled" : false
-			},
 			"properties" : {
 				"title": {
 					"type" : "string"
@@ -74,6 +71,27 @@ Note.find_by_id = function (_id, callback) {
 	});
 };
 
+Note.list = function (callback) {
+	client.search({
+		index: config.index,
+		type: config.type,
+		body: {
+			query: {
+				match_all: {}
+			}
+		},
+		size: 1000
+	}, callback);
+};
+
+// Index Operations
+
+Note.refresh = function (callback) {
+	client.indices.refresh({
+		index: config.index
+	}, callback);
+}
+
 Note.createIndex = function (callback) {
 	client.indices.create({
 		index: config.index
@@ -84,6 +102,18 @@ Note.deleteIndex = function (callback) {
 	client.indices.delete({
 		index: config.index
 	}, callback);
+};
+
+Note.clearIndex = function (callback) {
+	client.deleteByQuery({
+		index: config.index,
+		type: config.type,
+		body: {
+			query: {
+				match_all: {}
+			}
+		}
+	}, callback)
 };
 
 Note.createMapping = function (callback) {

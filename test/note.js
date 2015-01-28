@@ -1,3 +1,4 @@
+var async = require("async");
 var path = require("path");
 var assert = require("chai").assert;
 var helper = require(path.join(__dirname, "helpers/index.js"));
@@ -82,6 +83,58 @@ describe("Note Model", function () {
 					done();
 				});
 			});
+		});
+	});
+
+	describe(".clearIndex", function () {
+		it ("clears the index", function (done) {
+			Note.create({
+				title: "Foo",
+				content: "Bar"
+			}, function (error, result) {
+				if (error) return done(error);
+				Note.clearIndex(function (error, result) {
+					if (error) return done(error);
+					client.count({
+						index: "notorious",
+						type: "note"
+					}, function (error, result) {
+						if (error) return done(error);
+						assert.equal(result.count, 0);
+						done();
+					});
+				});
+			})
+		});
+	});
+
+	describe(".list", function () {
+		var notes = [1,2,3];
+		notes = notes.map(function (elem) {
+			return function (callback) {
+				Note.create({
+					title: elem.toString(),
+					content: (elem * 1000).toString()
+				}, callback)
+			};
+		});
+		before(function (done) {
+			async.parallel(notes, function (error) {
+				if (error) return done(error);
+				Note.refresh(done);
+			});
+		});
+		after(function (done) {
+			Note.clearIndex(done);
+		});
+		it ("returns all current notes", function (done) {
+			setTimeout(function () {
+				Note.list(function (error, result) {
+					if (error) return done(error);
+					assert.equal(result.hits.hits.length, 3);
+					done();
+				});
+			}, 1000)
 		});
 	});
 });

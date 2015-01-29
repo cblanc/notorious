@@ -11,7 +11,7 @@ var config = {
 	live: {
 		elasticsearch: {
 			host: "localhost:9200",
-			log: "trace"
+			log: "info"
 		},
 		port: 8000
 	}

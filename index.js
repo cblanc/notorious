@@ -10,4 +10,7 @@ require(path.join(__dirname, "config/express.js"))(app, config);
 require(path.join(__dirname, "config/routes.js"))(app, config);
 
 app.listen(config.port);
+
 console.log("Listening on port", config.port);
+
+module.exports = app;

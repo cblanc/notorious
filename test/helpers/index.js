@@ -36,4 +36,6 @@ helper.testNote = function (note, savedNote) {
 	assert.equal(note.tags[1], savedNote.tags[1]);
 };
 
+helper.app = require(path.join(__dirname, "../../index.js"));
+
 module.exports = helper;

@@ -1,9 +1,27 @@
-module.exports = function (app, config) {
+var path = require("path");
+var Note = require(path.join(__dirname, "../app/models/note.js"));
+
+module.exports = function (app, config, next) {
 	app.get("/", function (request, response) {
-		response.render("home", {
-			notes: [{id: "1",title: "Note 1"}, {id: "2",title: "Note 2"}, {id: "3",title: "Note 3"}]
+		Note.list(function (error, notes) {
+			if (error) return next(error);
+			console.log(notes);
+			response.render("home", {
+				notes: notes
+			});
 		});
 	});
+
+	app.route("/notes")
+		.post(function (request, response, next) {
+			Note.create({
+				title: "New Note",
+				content: ""
+			}, function (error, result) {
+				if (error) return next(error);
+				response.redirect("/");
+			});
+		});
 
 	app.get("/settings", function (request, response) {
 		response.render("settings");

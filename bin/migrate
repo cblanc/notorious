@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+var fs = require("fs");
+var path = require("path");
+var async = require("async");
+var program = require('commander');
+var migrationPath = path.join(__dirname, "../migrate/");
+var package = require(path.join(__dirname, "../package.json"));
+
+var migrations = [];
+
+fs.readdirSync(migrationPath).forEach(function (file) {
+	migrations.push(file);
+});
+
+migrations.sort();
+
+
+program
+	.version(package.version)
+	.command("up")
+	.action(migrate("up"));
+
+program
+	.version(package.version)
+	.command("down")
+	.action(migrate("down"));
+
+function migrate(direction) {
+	return function () {
+		if (direction !== "down") {
+			direction = "up";
+		};
+
+		migrations = migrations.map(function (migration) {
+			return require(path.join(migrationPath, migration))[direction];
+		});
+
+		async.series(migrations, function (error, result) {
+			if (error) {
+				console.log("An error occurred during migration run.", error);
+				process.exit(1);
+			}
+			console.log("Completed migration");
+			process.exit(0);
+		});
+	}
+};
+
+program.parse(process.argv);

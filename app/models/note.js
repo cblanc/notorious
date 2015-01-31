@@ -34,6 +34,16 @@ function Note (note) {
 
 Note._config = config;
 
+Note.count = function (callback) {
+	client.count({
+		index: config.index,
+		type: config.type
+	}, function (error, result) {
+		if (error) return callback(error);
+		callback(null, result.count);
+	});
+}
+
 Note.create = function (note, callback) {
 	client.index({
 		index: config.index,

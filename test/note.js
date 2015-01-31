@@ -43,6 +43,28 @@ describe("Note Model", function () {
 		});
 	});
 
+	describe(".count", function () {
+		before(function (done) {
+			Note.create(note, function (error, result) {
+				if (error) return done(error);
+				_id = result._id;
+				Note.refresh(done);
+			});
+		});
+
+		after(function (done) {
+			Note.delete(_id, done);
+		});
+
+		it ("returns number of documents for note type", function (done) {
+			Note.count(function (error, result) {
+				if (error) return done(error);
+				assert.equal(result, 1);
+				done();
+			});
+		});
+	});
+
 	describe(".find_by_id", function () {
 		before(function (done) {
 			Note.create(note, function (error, result) {

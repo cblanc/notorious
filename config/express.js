@@ -1,12 +1,14 @@
+var env 
 var path = require("path");
-var morgan = require("morgan");
 var express = require("express");
 var bodyParser = require("body-parser");
 var hbs = require("express-handlebars");
 
-module.exports = function (app) {
+module.exports = function (app, config) {
 	// Enable logging
-	app.use(morgan("combined"));
+	if (config.env === "live") {
+		app.use(morgan("combined"));
+	}
 
 	// Enable body parser
 	app.use(bodyParser.json());

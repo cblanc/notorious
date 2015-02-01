@@ -4,7 +4,7 @@ var helper = require(path.join(__dirname, "helpers/index.js"));
 var client = helper.client;
 var Note = helper.Note;
 
-describe("Note Model", function () {
+describe("Note Model Index Operations", function () {
 	describe(".deleteIndex", function () {
 		beforeEach(function(done) {
 			Note.createIndex(done);

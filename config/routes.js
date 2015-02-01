@@ -1,11 +1,11 @@
 var path = require("path");
 var Note = require(path.join(__dirname, "../app/models/note.js"));
 
-module.exports = function (app, config, next) {
-	app.get("/", function (request, response) {
+module.exports = function (app, config) {
+	app.get("/", function (request, response, next) {
 		Note.list(function (error, notes) {
+			if (error) console.log(error);
 			if (error) return next(error);
-			console.log(notes);
 			response.render("home", {
 				notes: notes
 			});

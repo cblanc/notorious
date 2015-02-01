@@ -1,11 +1,24 @@
 var path = require("path");
-var helper = path.join(__dirname, "helpers/index.js");
+var helper = require(path.join(__dirname, "helpers/index.js"));
 var Note = helper.Note;
 var app = helper.app;
 var request = require("supertest");
 var assert = require("chai").assert;
+var note = {
+	title: "Note title",
+	content: "Note content",
+	tags: ["foo", "bar"]
+};
 
 describe("/", function () {
+	before(function (done) {
+		helper.setupDb(done);
+	});
+
+	after(function (done) {
+		helper.teardownDb(done);
+	});
+
 	it ("renders home page", function (done) {
 		request(app)
 			.get("/")
@@ -16,3 +29,25 @@ describe("/", function () {
 			});
 	});
 });
+
+// describe("/note", function () {
+// 	it ("creates a note", function (done) {
+// 		Note.count(function (error, count) {
+// 			if (error) return done(error);
+// 			request(app)
+// 				.post("/notes")
+// 				.send(note)
+// 				.expect(301)
+// 				.end(function (error, response) {
+// 					if (error) return done(error);
+// 					console.log(response.headers);
+// 					// It should redirect to home
+// 					Note.count(function (error, newCount) {
+// 						if (error) return done(error);
+// 						assert.equal(count + 1, newCount);
+// 						done();
+// 					});
+// 				});
+// 		});
+// 	});
+// });

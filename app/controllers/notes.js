@@ -4,7 +4,7 @@ var notesController = {};
 var path = require("path");
 var Note = require(path.join(__dirname, "../models/note.js"));
 
-notesController.get = function (request, response, next) {
+notesController.index = function (request, response, next) {
 	response.format({
 		json: function () {
 			Note.list(function (error, notes) {
@@ -33,6 +33,20 @@ notesController.post = function (request, response, next) {
 				return response.redirect("/");
 			}
 		});
+	});
+};
+
+notesController.get = function (request, response, next) {
+	response.format({
+		json: function () {
+			Note.find_by_id(request.params.id, function (error, note) {
+				if (error) return next(error);
+				return response.status(200).json(note);
+			});
+		},
+		default: function () {
+			return response.redirect("/");
+		}
 	});
 };
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var path = require("path");
 var helper = require(path.join(__dirname, "helpers/index.js"));
 var Note = helper.Note;
@@ -56,6 +58,7 @@ describe("/notes", function () {
 					.get("/notes")
 					.set("Accept", "application/json")
 					.expect(200)
+					.expect("Content-Type", /json/)
 					.end(function (error, response) {
 						if (error) return done(error);
 						var notes = response.body.notes;
@@ -120,19 +123,88 @@ describe("/notes", function () {
 	});
 });
 
-// describe("PUT /note", function () {
-// 	before(function (done) {
-// 		helper.setupDb(function (error, result) {
-// 			if (error) return done(error);
-// 			Note.create(note, done);
-// 		});
-// 	});
+describe("/notes/:id", function () {
+	before(function (done) {
+		helper.setupDb(done);
+	});
 
-// 	after(function (done) {
-// 		helper.teardownDb(done);
-// 	});
+	after(function (done) {
+		helper.teardownDb(done);
+	});
 
-// 	it ("updates a note", function (done) {
+	describe("GET", function () {
+		var _id;
 		
-// 	});
-// });
+		before(function (done) {
+			Note.create(note, function (error, result) {
+				if (error) return done(error);
+				_id = result._id;
+				Note.refresh(done);
+			});
+		});
+
+		after(function (done) {
+			Note.delete(_id, function (error) {
+				if (error) return done(error);
+				Note.refresh(done);
+			});
+		});
+
+		describe("HTML", function () {
+			it ("redirects to /", function (done) {
+				request(app)
+					.get("/notes/" + _id)
+					.set("Accept", "text/html")
+					.expect(302)
+					.end(function (error, response) {
+						if (error) return done(error);
+						done();
+					});
+			});
+		});
+
+		describe("JSON", function () {
+			it ("returns a note", function (done) {
+				request(app)
+					.get("/notes/" + _id)
+					.set("Accept", "application/json")
+					.expect(200)
+					.expect("Content-Type", /json/)
+					.end(function (error, response) {
+						if (error) return done(error);
+						var newNote = response.body;
+						assert.equal(note.title, newNote.title);
+						assert.equal(note.content, newNote.content);
+						done();
+					});
+			});
+		});
+	});
+
+	describe("PUT", function () {
+		var _id;
+		
+		before(function (done) {
+			Note.create(note, function (error, result) {
+				if (error) return done(error);
+				_id = result._id;
+				Note.refresh(done);
+			});
+		});
+
+		after(function (done) {
+			Note.delete(_id, function (error) {
+				if (error) return done(error);
+				Note.refresh(done);
+			});
+		});
+
+		describe("HTML", function () {
+			it ("updates a note");
+		});
+
+		describe("JSON", function () {
+			it ("updates a note");
+		});
+	});
+});

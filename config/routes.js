@@ -16,25 +16,11 @@ module.exports = function (app, config) {
 	});
 
 	app.route("/notes")
-		.get(controllers.notes.get)
-		.post(function (request, response, next) {
-			Note.create({
-				title: "New Note",
-				content: ""
-			}, function (error, result) {
-				if (error) return next(error);
-				response.format({
-					json: function () {
-						return response.status(200).json(result);
-					},
-					default: function () {
-						return response.redirect("/");
-					}
-				});
-			});
-		});
+		.get(controllers.notes.index)
+		.post(controllers.notes.post);
 	
-	// app.route("/notes/:id")
+	app.route("/notes/:id")
+		.get(controllers.notes.get);
 	// 	.put(function (request, response) {
 	// 		Note.find_by_id(request.params.id, function (error, result) {
 	// 			if (error) return done(error);

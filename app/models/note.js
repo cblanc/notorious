@@ -64,6 +64,17 @@ Note.delete = function (_id, callback) {
 	}, callback);
 };
 
+Note.update = function (_id, note, callback) {
+	client.update({
+		index: config.index,
+		type: config.type,
+		id: _id,
+		body: {
+			doc: note
+		}
+	}, callback);
+};
+
 Note.find_by_id = function (_id, callback) {
 	client.get({
 		index: config.index,

@@ -1,4 +1,7 @@
+"use strict";
+
 var path = require("path");
+var controllers = require(path.join(__dirname, "../app/controllers/index.js"));
 var Note = require(path.join(__dirname, "../app/models/note.js"));
 
 module.exports = function (app, config) {
@@ -13,21 +16,7 @@ module.exports = function (app, config) {
 	});
 
 	app.route("/notes")
-		.get(function (request, response, next) {
-			response.format({
-				json: function () {
-					Note.list(function (error, notes) {
-						if (error) return next(error);
-						return response.status(200).json({
-							notes: notes.map(function (note) { return note._source })
-						});
-					});
-				},
-				default: function () {
-					return response.redirect("/");
-				}
-			})
-		})
+		.get(controllers.notes.get)
 		.post(function (request, response, next) {
 			Note.create({
 				title: "New Note",

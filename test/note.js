@@ -92,7 +92,35 @@ describe("Note Model", function () {
 				done();
 			});	
 		});
-	})
+	});
+
+	describe(".update", function () {
+		before(function (done) {
+			Note.create(note, function (error, result) {
+				if (error) return done(error);
+				_id = result._id;
+				done();
+			});
+		});
+
+		after(function (done) {
+			Note.delete(_id, done);
+		});
+
+		it ("updates a note", function (done) {
+			var newContent = "Now for something else";
+			Note.update(_id, {
+				content: newContent
+			}, function (error, result) {
+				if (error) return done(error);
+				Note.find_by_id(_id, function (error, result) {
+					if (error) return done(error);
+					assert.equal(result.content, newContent);
+					done();
+				});
+			});
+		});
+	});
 
 	describe(".create", function (done) {
 		it ("creates a note", function (done) {

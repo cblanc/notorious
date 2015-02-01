@@ -29,3 +29,32 @@ describe("/", function () {
 			});
 	});
 });
+
+describe("Non existant pages", function () {
+	describe("HTML", function () {
+		it ("returns a 404 if resource does not exist", function (done) {
+			request(app)
+				.get("/foo")
+				.set("Accept", "text/html")
+				.expect(404)
+				.expect("Content-Type", /html/)
+				.end(function(error, result) {
+					if (error) return done(error);
+					done();
+				});
+		});
+	});
+	describe("JSON", function () {
+		it ("returns a 404 if resource does not exist", function (done) {
+			request(app)
+				.get("/foo")
+				.set("Accept", "application/json")
+				.expect(404)
+				.expect("Content-Type", /json/)
+				.end(function(error, result) {
+					if (error) return done(error);
+					done();
+				});
+		});
+	});
+});

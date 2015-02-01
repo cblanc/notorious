@@ -50,4 +50,14 @@ notesController.get = function (request, response, next) {
 	});
 };
 
+notesController.put = function (request, response, next) {
+	next();
+	// Note.find_by_id(request.params.id, function (error, result) {
+	// 	if (error) return next(error);
+	// 	if (result === null) {
+
+	// 	}
+	// });
+};
+
 module.exports = notesController;

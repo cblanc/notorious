@@ -15,20 +15,30 @@ module.exports = function (app, config) {
 		});
 	});
 
+	app.get("/settings", function (request, response) {
+		response.render("settings");
+	});
+
 	app.route("/notes")
 		.get(controllers.notes.index)
 		.post(controllers.notes.post);
 	
 	app.route("/notes/:id")
-		.get(controllers.notes.get);
-	// 	.put(function (request, response) {
-	// 		Note.find_by_id(request.params.id, function (error, result) {
-	// 			if (error) return done(error);
+		.get(controllers.notes.get)
+		.put(controllers.notes.put);
 
-	// 		});
-	// 	});
-
-	app.get("/settings", function (request, response) {
-		response.render("settings");
+	// Page not found
+	app.use(function (request, response, next) {
+		response.format({
+			default: function () {
+				response.status(404).render("404");
+			},
+			json: function () {
+				response.status(404).json({
+					code: 404,
+					error: "Page not found"
+				});
+			}
+		})
 	});
 };

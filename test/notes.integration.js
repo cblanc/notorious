@@ -178,6 +178,7 @@ describe("/notes/:id", function () {
 						done();
 					});
 			});
+			it ("returns 404 if note does not exist");	
 		});
 	});
 

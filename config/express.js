@@ -1,5 +1,6 @@
 var env 
 var path = require("path");
+var morgan = require("morgan");
 var express = require("express");
 var bodyParser = require("body-parser");
 var hbs = require("express-handlebars");

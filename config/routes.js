@@ -13,7 +13,22 @@ module.exports = function (app, config) {
 	});
 
 	app.route("/notes")
-		.post(function (request, response) {
+		.get(function (request, response, next) {
+			response.format({
+				json: function () {
+					Note.list(function (error, notes) {
+						if (error) return next(error);
+						return response.status(200).json({
+							notes: notes.map(function (note) { return note._source })
+						});
+					});
+				},
+				default: function () {
+					return response.redirect("/");
+				}
+			})
+		})
+		.post(function (request, response, next) {
 			Note.create({
 				title: "New Note",
 				content: ""
@@ -21,10 +36,10 @@ module.exports = function (app, config) {
 				if (error) return next(error);
 				response.format({
 					json: function () {
-						response.status(200).json(result);
+						return response.status(200).json(result);
 					},
 					default: function () {
-						response.redirect("/");
+						return response.redirect("/");
 					}
 				});
 			});
